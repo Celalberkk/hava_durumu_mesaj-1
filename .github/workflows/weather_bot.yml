@@ -1,0 +1,33 @@
+name: Gunluk Hava Durumu Botu
+
+on:
+  schedule:
+    # UTC saatine göre 05:30 (Türkiye saati ile 08:30)
+    - cron: '30 5 * * *'
+  workflow_dispatch: # Bu satır, istediğin zaman manuel olarak butona basıp test edebilmeni sağlar
+
+jobs:
+  run-bot:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Kodları Çek
+      uses: actions/checkout@v3
+
+    - name: Python Kur
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.10'
+
+    - name: Gerekli Kütüphaneleri Yükle
+      run: |
+        pip install -r requirements.txt
+
+    - name: Botu Çalıştır
+      env:
+        TWILIO_ACCOUNT_SID: ${{ secrets.TWILIO_ACCOUNT_SID }}
+        TWILIO_AUTH_TOKEN: ${{ secrets.TWILIO_AUTH_TOKEN }}
+        TWILIO_WHATSAPP_FROM: ${{ secrets.TWILIO_WHATSAPP_FROM }}
+        TWILIO_WHATSAPP_TO: ${{ secrets.TWILIO_WHATSAPP_TO }}
+      run: |
+        python main.py --now

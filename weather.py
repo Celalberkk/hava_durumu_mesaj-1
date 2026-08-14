@@ -7,7 +7,7 @@ API anahtarı gerektirmez.
 """
 
 import requests
-from datetime import datetime, date
+from datetime import datetime, date, timezone, timedelta
 import logging
 
 logger = logging.getLogger(__name__)
@@ -71,8 +71,11 @@ def get_hourly_forecast(latitude: float, longitude: float) -> list[dict]:
         if key not in hourly:
             raise ValueError(f"API yanıtında '{key}' alanı eksik.")
 
-    # Bugünün tarihini al ve sadece bugünün verilerini filtrele
-    today_str = date.today().isoformat()
+    # Türkiye (UTC+3) zaman dilimini oluştur
+    tr_tz = timezone(timedelta(hours=3))
+    
+    # Bugünün tarihini sunucuya göre değil, Türkiye'ye göre al
+    today_str = datetime.now(tr_tz).date().isoformat()
 
     result = []
     for i, time_str in enumerate(hourly["time"]):

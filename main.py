@@ -18,6 +18,9 @@ import sys
 import os
 import time
 
+import random
+from quotes import MOTIVATION_QUOTES
+
 import schedule
 from dotenv import load_dotenv
 
@@ -120,6 +123,11 @@ def run_weather_check():
 
     # ─── 4. Uyarı mesajı oluştur ─────────────────────────────────────────
     message = build_alert_message(rain_hours, hot_hours, cold_hours, city=city, hourly_data=hourly_data)
+    
+    # --- Motivasyon Sözünü Ekle ---
+    random_quote = random.choice(MOTIVATION_QUOTES)
+    message = f"{message}\n\n💬 *Günün Sözü:*\n_{random_quote}_"
+
     logger.info(f"Oluşturulan mesaj:\n{message}")
 
     # ─── 5. WhatsApp ile gönder ──────────────────────────────────────────

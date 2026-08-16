@@ -46,34 +46,21 @@ logger = logging.getLogger(__name__)
 
 
 def load_config() -> dict:
-    """
-    .env dosyasından gerekli konfigürasyon değerlerini yükler ve doğrular.
-
-    Returns:
-        Konfigürasyon sözlüğü
-
-    Raises:
-        SystemExit: Zorunlu bir değer eksikse
-    """
     config = {
-        "twilio_account_sid": os.getenv("TWILIO_ACCOUNT_SID"),
-        "twilio_auth_token": os.getenv("TWILIO_AUTH_TOKEN"),
-        "twilio_from_number": os.getenv("TWILIO_WHATSAPP_FROM", "whatsapp:+14155238886"),
-        "twilio_to_number": os.getenv("TWILIO_WHATSAPP_TO"),
+        "callmebot_phone": os.getenv("CALLMEBOT_PHONE"),
+        "callmebot_apikey": os.getenv("CALLMEBOT_API_KEY"),
     }
 
-    # Zorunlu alanları kontrol et
     required = {
-        "twilio_account_sid": "TWILIO_ACCOUNT_SID",
-        "twilio_auth_token": "TWILIO_AUTH_TOKEN",
-        "twilio_to_number": "TWILIO_WHATSAPP_TO",
+        "callmebot_phone": "CALLMEBOT_PHONE",
+        "callmebot_apikey": "CALLMEBOT_API_KEY",
     }
 
     missing = [env_name for key, env_name in required.items() if not config[key]]
     if missing:
         logger.error(
             f"Eksik konfigürasyon değerleri: {', '.join(missing)}. "
-            f"Lütfen .env dosyasını kontrol edin."
+            f"Lütfen .env dosyasını veya GitHub Secrets'ı kontrol edin."
         )
         sys.exit(1)
 

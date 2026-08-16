@@ -119,10 +119,8 @@ def run_weather_check():
 
     # ─── 5. WhatsApp ile gönder ──────────────────────────────────────────
     success = send_whatsapp_message(
-        account_sid=config["twilio_account_sid"],
-        auth_token=config["twilio_auth_token"],
-        from_number=config["twilio_from_number"],
-        to_number=config["twilio_to_number"],
+        phone_number=config["callmebot_phone"],
+        api_key=config["callmebot_apikey"],
         message=message
     )
 

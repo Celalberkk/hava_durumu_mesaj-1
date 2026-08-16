@@ -1,31 +1,22 @@
 """
-notifier.py — Twilio WhatsApp API ile bildirim gönderme modülü.
+notifier.py — CallMeBot API ile bildirim gönderme modülü.
 
-Twilio'nun WhatsApp Sandbox veya üretim ortamı üzerinden
-WhatsApp mesajları gönderir.
+CallMeBot üzerinden 24 saat sınırına takılmadan
+ücretsiz WhatsApp mesajları gönderir.
 """
 
-from twilio.rest import Client
+import requests
 import logging
 
 logger = logging.getLogger(__name__)
 
-
-def send_whatsapp_message(
-    account_sid: str,
-    auth_token: str,
-    from_number: str,
-    to_number: str,
-    message: str
-) -> bool:
+def send_whatsapp_message(phone_number: str, api_key: str, message: str) -> bool:
     """
-    Twilio API kullanarak WhatsApp mesajı gönderir.
+    CallMeBot API kullanarak WhatsApp mesajı gönderir.
 
     Args:
-        account_sid: Twilio Account SID
-        auth_token: Twilio Auth Token
-        from_number: Twilio WhatsApp numarası (örn: "whatsapp:+14155238886")
-        to_number: Alıcı WhatsApp numarası (örn: "whatsapp:+905xxxxxxxxx")
+        phone_number: Alıcı WhatsApp numarası (Başında + ile ülke kodu, boşluksuz. Örn: +905xxxxxxxxx)
+        api_key: CallMeBot'tan alınan 6 haneli şifre
         message: Gönderilecek mesaj metni
 
     Returns:
@@ -33,17 +24,23 @@ def send_whatsapp_message(
         False: Mesaj gönderilemezse
     """
     try:
-        client = Client(account_sid, auth_token)
-
-        msg = client.messages.create(
-            from_=from_number,
-            body=message,
-            to=to_number
-        )
-
-        logger.info(f"WhatsApp mesajı gönderildi! SID: {msg.sid}, Durum: {msg.status}")
-        return True
+        url = "https://api.callmebot.com/whatsapp.php"
+        params = {
+            "phone": phone_number,
+            "text": message,
+            "apikey": api_key
+        }
+        
+        response = requests.get(url, params=params, timeout=15)
+        
+        # 200 OK döndüyse mesaj gitmiştir
+        if response.status_code == 200:
+            logger.info("WhatsApp mesajı CallMeBot ile başarıyla gönderildi!")
+            return True
+        else:
+            logger.error(f"CallMeBot hatası (Kod: {response.status_code}): {response.text}")
+            return False
 
     except Exception as e:
-        logger.error(f"WhatsApp mesajı gönderilemedi: {e}")
+        logger.error(f"WhatsApp mesajı gönderilirken bağlantı hatası oluştu: {e}")
         return False

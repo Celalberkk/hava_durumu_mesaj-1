@@ -2,8 +2,8 @@ name: Gunluk Hava Durumu Botu
 
 on:
   schedule:
-    # UTC saatine göre 05:30 (Türkiye saati ile 08:30)
-    - cron: '30 5 * * *'
+  # Mountain View yerel saatiyle 08:30 (15:30 UTC)
+  - cron: '23 15 * * *'
   workflow_dispatch: # Bu satır, istediğin zaman manuel olarak butona basıp test edebilmeni sağlar
 
 jobs:

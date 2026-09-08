@@ -8,11 +8,11 @@ def detect_location() -> dict:
     yurt dışında görünmesini önlemek için Antalya/Manavgat konumunu sabit döner.
     """
     return {
-        "latitude": 37.3861,
-        "longitude": -122.0839,
-        "city": "Mountain View",
-        "district": "Santa Clara County",
-        "country": "United States",
+        "latitude": 36.786869,
+        "longitude": 31.441282,
+        "city": "Antalya",
+        "district": "Manavgat",
+        "country": "Türkiye",
         "source": "manual"
     }
 

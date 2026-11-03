@@ -5,7 +5,7 @@ Her sabah 08:30'da çalışarak:
 1. Open-Meteo API'den saatlik hava durumu verisini çeker
 2. Yağmur, yüksek sıcaklık ve düşük sıcaklık koşullarını kontrol eder
 3. Uyarı mesajı oluşturur
-4. Twilio WhatsApp üzerinden mesajı gönderir
+4. CallMeBot WhatsApp üzerinden mesajı gönderir
 
 Kullanım:
     Zamanlayıcı ile:  python main.py

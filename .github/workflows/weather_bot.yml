@@ -1,31 +1,23 @@
-name: Gunluk Hava Durumu Botu
+name: Daily Weather Alert
 
 on:
   schedule:
-  # Mountain View yerel saatiyle 08:30 (15:30 UTC)
-  - cron: '30 5 * * *'
-  workflow_dispatch: # Bu satır, istediğin zaman manuel olarak butona basıp test edebilmeni sağlar
+    - cron: '30 5 * * *'   # Her gün 08:30 (TR saati)
+  workflow_dispatch:        # Elle çalıştırma butonu
 
 jobs:
-  run-bot:
+  send-alert:
     runs-on: ubuntu-latest
-
     steps:
-    - name: Kodları Çek
-      uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
-    - name: Python Kur
-      uses: actions/setup-python@v4
-      with:
-        python-version: '3.10'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
 
-    - name: Gerekli Kütüphaneleri Yükle
-      run: |
-        pip install -r requirements.txt
+      - run: pip install -r requirements.txt
 
-    - name: Botu Çalıştır
-      env:
-        CALLMEBOT_PHONE: ${{ secrets.CALLMEBOT_PHONE }}
-        CALLMEBOT_API_KEY: ${{ secrets.CALLMEBOT_API_KEY }}
-      run: |
-        python main.py --now
+      - run: python main.py --now
+        env:
+          CALLMEBOT_PHONE: ${{ secrets.CALLMEBOT_PHONE }}
+          CALLMEBOT_API_KEY: ${{ secrets.CALLMEBOT_API_KEY }}
